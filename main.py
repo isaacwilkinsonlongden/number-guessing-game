@@ -1,5 +1,6 @@
 import random
 import sys
+import os
 
 
 def play_game():
@@ -12,6 +13,8 @@ def play_game():
 
 
 def main():
+    os.system('cls' if os.name == 'nt' else 'clear')
+
     secret_number = random.randint(1, 100)
     print("----------------------------------------------------------------------")
     print("Welcome to the number guessing game! Please make a guess from 1 - 100.")
