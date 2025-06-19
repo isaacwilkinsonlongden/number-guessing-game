@@ -17,7 +17,7 @@ def play_game():
 def main():
     os.system('cls' if os.name == 'nt' else 'clear')
 
-    low, high = difficulty()
+    low, high, max_guesses = difficulty()
     secret_number = random.randint(low, high)
     print("----------------------------------------------------------------------")
     print(f"Welcome to the number guessing game! Please make a guess from {low} - {high}.")
@@ -27,13 +27,24 @@ def main():
     attempts = 1
 
     while guess != secret_number:
+        if attempts == (max_guesses - 3):
+            print("You have 3 guesses left!")
+        elif attempts == (max_guesses - 1):
+            print("LAST CHANCE!")    
+        elif attempts == max_guesses:
+            print("----------------------------------")
+            print("GAME OVER! YOU RAN OUT OF GUESSES.")
+            print(f"The secret number was {secret_number}")
+            print("----------------------------------")
+            return
+
         if guess < secret_number:
             print("Too low! Please guess again.")
             print("----------------------------")  
         elif guess > secret_number:
             print("Too high! Please guess again.")
             print("-----------------------------")
- 
+
         guess = get_valid_guess(low, high) 
         attempts += 1    
 
@@ -68,13 +79,13 @@ def difficulty():
         difficulty = input("Your choice (easy, medium, hard, elite): ").strip().lower()
 
         if difficulty == "easy":
-            return 1, 10
+            return 1, 10, 4
         elif difficulty == "medium":
-            return 1, 100
+            return 1, 100, 7
         elif difficulty == "hard":
-            return 1, 200
+            return 1, 200, 8
         elif difficulty == "elite":
-            return 1, 1000
+            return 1, 1000, 9
         else:
             print("Please enter a valid difficulty")
             print("-------------------------------")    
