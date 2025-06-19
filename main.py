@@ -8,28 +8,33 @@ def play_game():
         main()
         play_again = input("Play again? y/n: ").strip().lower()
         if play_again not in ("y", "yes"):
+            print("-------------------")
             print("Thanks for playing!")
+            print("-------------------")
             break
 
 
 def main():
     os.system('cls' if os.name == 'nt' else 'clear')
 
-    secret_number = random.randint(1, 100)
+    low, high = difficulty()
+    secret_number = random.randint(low, high)
     print("----------------------------------------------------------------------")
-    print("Welcome to the number guessing game! Please make a guess from 1 - 100.")
+    print(f"Welcome to the number guessing game! Please make a guess from {low} - {high}.")
     print("----------------------------------------------------------------------")
 
-    guess = get_valid_guess()  
+    guess = get_valid_guess(low, high)  
     attempts = 1
 
     while guess != secret_number:
         if guess < secret_number:
-            print("Too low! Please guess again.")  
+            print("Too low! Please guess again.")
+            print("----------------------------")  
         elif guess > secret_number:
             print("Too high! Please guess again.")
+            print("-----------------------------")
  
-        guess = get_valid_guess() 
+        guess = get_valid_guess(low, high) 
         attempts += 1    
 
     print("----------------------------------------------------------------------")
@@ -37,18 +42,42 @@ def main():
     print("----------------------------------------------------------------------") 
 
 
-def get_valid_guess():
+def get_valid_guess(low, high):
     while True:
         try:
             guess = int(input("Enter your guess or type '0' to quit: "))
-            if 1 <= guess <= 100:
+            if low <= guess <= high:
                 return guess
             elif guess == 0:
                 exit_program()    
             else:
-                print("Please enter a number between 1-100.")
+                print(f"Please enter a number between {low}-{high}.")
+                print("------------------------------------")
         except ValueError:
             print("Please enter a valid number.")
+            print("----------------------------")
+
+
+def difficulty():
+    while True:
+        print("Please choose a difficulty:")
+        print("Easy:   1-10")
+        print("Medium: 1-100")
+        print("Hard:   1-200")
+        print("Elite:  1-1000")
+        difficulty = input("Your choice (easy, medium, hard, elite): ").strip().lower()
+
+        if difficulty == "easy":
+            return 1, 10
+        elif difficulty == "medium":
+            return 1, 100
+        elif difficulty == "hard":
+            return 1, 200
+        elif difficulty == "elite":
+            return 1, 1000
+        else:
+            print("Please enter a valid difficulty")
+            print("-------------------------------")    
 
 
 def exit_program():
